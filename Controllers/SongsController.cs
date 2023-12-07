@@ -20,7 +20,7 @@ namespace Assignment_5.Controllers
         }
 
         // GET: Songs
-        public async Task<IActionResult> Index(string songGenre, string songPerformer, string searchString)
+        public async Task<IActionResult> Index(string songGenre, string songPerformer)
         {
             if (_context.Song == null)
             {
@@ -54,12 +54,6 @@ namespace Assignment_5.Controllers
                 Performer = new SelectList(await performerQuery.Distinct().ToListAsync()),
                 Songs = await songs.ToListAsync()
             };
-
-            //var songPerformerVM = new SongViewModel
-            //{
-            //    Performer = new SelectList(await performerQuery.Distinct().ToListAsync()),
-            //    Songs = await songs.ToListAsync()
-            //};
 
             return View(songVM);
         }
