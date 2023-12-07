@@ -20,11 +20,38 @@ namespace Assignment_5.Controllers
         }
 
         // GET: Songs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string songGenre, string searchString)
         {
-              return _context.Song != null ? 
-                          View(await _context.Song.ToListAsync()) :
-                          Problem("Entity set 'Assignment_5Context.Song'  is null.");
+            if (_context.Song == null)
+            {
+                return Problem("Entity set 'Assignment_5Context.Song'  is null.");
+            }
+
+            // Use LINQ to get list of genres.
+            IQueryable<string> genreQuery = from s in _context.Song
+                                            orderby s.Genre
+                                            select s.Genre;
+
+            var songs = from s in _context.Song
+                         select s;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                songs = songs.Where(s => s.Title!.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(songGenre))
+            {
+                songs = songs.Where(x => x.Genre == songGenre);
+            }
+
+            var songGenreVM = new SongGenreView
+            {
+                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Songs = await songs.ToListAsync()
+            };
+
+            return View(songGenreVM);
         }
 
         // GET: Songs/Details/5
