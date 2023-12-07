@@ -53,6 +53,8 @@ namespace Assignment_5.Controllers
 
             return View(songGenreVM);
         }
+
+        // GET: Songs/Admin
         public async Task<IActionResult> Admin()
         {
             return _context.Song != null ?
