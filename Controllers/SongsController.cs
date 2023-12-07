@@ -20,20 +20,23 @@ namespace Assignment_5.Controllers
         }
 
         // GET: Songs
-        public async Task<IActionResult> Index(string songGenre, string searchString)
+        public async Task<IActionResult> Index(string songGenre, string songPerformer, string searchString)
         {
             if (_context.Song == null)
             {
                 return Problem("Entity set 'Assignment_5Context.Song'  is null.");
             }
 
-            // Use LINQ to get list of genres.
+            // Use LINQ to get list of genre or performers
             IQueryable<string> genreQuery = from s in _context.Song
                                             orderby s.Genre
                                             select s.Genre;
 
-            var songs = from s in _context.Song
-                         select s;
+            IQueryable<string> performerQuery = from s in _context.Song
+                                                orderby s.Performer
+                                                select s.Performer;
+
+            var songs = from s in _context.Song select s;
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -45,9 +48,20 @@ namespace Assignment_5.Controllers
                 songs = songs.Where(x => x.Genre == songGenre);
             }
 
-            var songGenreVM = new SongGenreView
+            if (!string.IsNullOrEmpty(songPerformer))
+            {
+                songs = songs.Where(x => x.Performer == songPerformer);
+            }
+
+            var songGenreVM = new SongViewModel
             {
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Songs = await songs.ToListAsync()
+            };
+
+            var songPerformerVM = new SongViewModel
+            {
+                Performer = new SelectList(await performerQuery.Distinct().ToListAsync()),
                 Songs = await songs.ToListAsync()
             };
 

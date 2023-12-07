@@ -14,10 +14,14 @@
             <option value="">All</option>
         </select>
 
-        Title: <input type="text" asp-for="SearchString" />
+        <select asp-for="SongPerformer" asp-items="Model.Performer">
+            <option value="">All</option>
+        </select>
+
         <input type="submit" value="Filter" />
     </p>
 </form>
+
 <!-- <p>
     <a asp-action="Create">Create New</a>
     <a asp-action="Delete">Delete Songs</a>
@@ -25,6 +29,7 @@
     <a asp-action="Edit">Edit songs</a>
 </p>
 -->
+
 <table class="table">
     <thead>
         <tr>
