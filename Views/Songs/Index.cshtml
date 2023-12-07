@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Assignment_5.Models.Song>
+﻿@model Assignment_5.Models.SongGenreView
 
 @{
     ViewData["Title"] = "Index";
@@ -6,6 +6,20 @@
 
 <h1>Index</h1>
 
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-controller="Songs" asp-action="Index" method="get">
+    <p>
+
+        <select asp-for="SongGenre" asp-items="Model.Genres">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <!-- <p>
     <a asp-action="Create">Create New</a>
     <a asp-action="Delete">Delete Songs</a>
@@ -17,22 +31,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.Songs![0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Performer)
+                @Html.DisplayNameFor(model => model.Songs![0].Performer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                @Html.DisplayNameFor(model => model.Songs![0].Genre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.Songs![0].Price)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Songs!) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
