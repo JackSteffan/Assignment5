@@ -38,11 +38,6 @@ namespace Assignment_5.Controllers
 
             var songs = from s in _context.Song select s;
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                songs = songs.Where(s => s.Title!.Contains(searchString));
-            }
-
             if (!string.IsNullOrEmpty(songGenre))
             {
                 songs = songs.Where(x => x.Genre == songGenre);
@@ -53,19 +48,20 @@ namespace Assignment_5.Controllers
                 songs = songs.Where(x => x.Performer == songPerformer);
             }
 
-            var songGenreVM = new SongViewModel
+            var songVM = new SongViewModel
             {
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Songs = await songs.ToListAsync()
-            };
-
-            var songPerformerVM = new SongViewModel
-            {
                 Performer = new SelectList(await performerQuery.Distinct().ToListAsync()),
                 Songs = await songs.ToListAsync()
             };
 
-            return View(songGenreVM);
+            //var songPerformerVM = new SongViewModel
+            //{
+            //    Performer = new SelectList(await performerQuery.Distinct().ToListAsync()),
+            //    Songs = await songs.ToListAsync()
+            //};
+
+            return View(songVM);
         }
 
         // GET: Songs/Admin

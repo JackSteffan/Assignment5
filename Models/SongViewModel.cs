@@ -9,6 +9,5 @@ namespace Assignment_5.Models
         public SelectList? Performer { get; set; }
         public string? SongGenre { get; set; }
         public string? SongPerformer { get; set; }
-        public string? SearchString { get; set; }
     }
 }
